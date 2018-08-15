@@ -32,12 +32,12 @@ mapper:
   #mappers 多个接口时逗号隔开
   mappers: BaseMapper
 
-#pagehelper
-pagehelper:
-  helperDialect: mysql
-  reasonable: true
-  supportMethodsArguments: true
-  params: countSql
+#pagehelper分页插件
+#pagehelper:
+#  helperDialect: mysql
+#  reasonable: true
+#  supportMethodsArguments: true
+#  params: countSql
 
 
 
