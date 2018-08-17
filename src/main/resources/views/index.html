@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>欢迎首页</title>
+<link href="css/welcome.css" rel="stylesheet" type="text/css">
+
+</head>
+<body class="notfound">
+
+<div class="wrapper">
+    <div class="big">长泽雅美，阿尼酱</div>
+    <div>welcome to index，let's together!</div>
+</div>
+
+<!-- 功能请求 -->
+<form enctype="multipart/form-data" id="formData" method="post">
+    <input type="file" id="file" name="file" /> <!--style="display: none"-->
+    <input type="text" id="text" onclick="getName()"/>
+    <input type="button" value="上传" onclick="getName()"/><br/>
+    <input type="button" onclick="inFile()" value="确定导入"/>
+</form>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/importFile.js"></script>
+</body>
+</html>

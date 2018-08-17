@@ -2,6 +2,7 @@ package com.dm.zos.controller.orderSysReport.controller;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.dm.zos.controller.orderSysReport.entity.BBill;
 import com.dm.zos.controller.orderSysReport.service.OrderSysReportService;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -93,6 +95,35 @@ public class OrderSysReportController {
 					bBill = JSONUtil.toBean((String) bill,BBill.class);
 					list2.add(bBill);
 				});
+
+		//有数据时
+		if (list2.size() > 0){
+			int total = list2.size(); //总记录数
+			int size = 100; //每次插入条数
+			int num = total%size == 0 ? total/size : total/size + 1; //共插入次数
+			int start = 0;
+
+			logger.info("--> 开始插入数据，数据总量{}，插入容量{}/次, 需插入次数{}", total, size, num);
+			for (int i = 1; i <= num; i++){ //共插入次数
+				start++; //位移标记
+				List<BBill> tempList = new ArrayList <>();
+
+				if (start != num){ //非最后一次
+					for(int j = (start-1)*size; j <= (size*start-1); j++){
+						tempList.add(list2.get(j)); //分批取出list2数据到tempList
+					}
+				} else {//最后一次 <= size的数据
+					for(int j = (start-1)*size; j < total-1; j++){
+						tempList.add(list2.get(j)); //分批取出list2数据到tempList
+					}
+				}
+
+				logger.info("--> 第{}次开始插入", i);
+//				orderSysReportDao.saveBatch(tempList);
+				logger.info("--> 第{}次插入完成", i);
+			}
+			logger.info("--> 数据全部插入完成，共计{}条", total);
+		}
 	}
 
 
@@ -142,28 +173,22 @@ public class OrderSysReportController {
 		file2.createNewFile();
 	}
 
-	public static void main(String[] args) throws Exception {
-		File file = new File("D:/20171201_20180430订单信息查询.txt");
-		InputStream is = new FileInputStream(file);
-		List list = new ArrayList();
-		IoUtil.readUtf8Lines(is,list);
-		List<BBill> list2 = new ArrayList<>();
+	/*
+	 * 上传文件
+	 * */
+	@RequestMapping("/importFile")
+	public JSONObject importFile(MultipartFile file, HttpServletRequest request,HttpServletResponse response){
 
-		list.stream()
-			.forEach(bill -> {
-				BBill bBill = new BBill();
-				bBill = JSONUtil.toBean((String) bill,BBill.class);
-				list2.add(bBill);
-			});
+		JSONObject r = new JSONObject();
+		r.put("code", "200");
+		r.put("msg", "success");
 
+		String fileName = file.getOriginalFilename();
+		String path = request.getServletContext().getContextPath();
+		System.out.println(fileName + "\n" + path);
+		r.put("rs",fileName);
 
-		PageInfo<BBill> pageInfo = null;
-		while(pageInfo == null || pageInfo.isHasNextPage()){
-			PageHelper.startPage(pageInfo == null ? 1 : pageInfo.getNextPage(),50);
-			pageInfo = new PageInfo<>(list2);
-			System.out.println(JSONUtil.toJsonStr(pageInfo) + "\n");
-		}
-
+		return r;
 	}
 
 }
