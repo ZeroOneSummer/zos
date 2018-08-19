@@ -18,20 +18,34 @@
   </resultMap>
 
   <select id="queryList" resultMap="BaseResultMap">
+      SELECT
+        *
+      FROM
+        b_bill
+      <where>
+        <if test="startTime != null">
+          and begin_date >= #{startTime}
+        </if>
+        <if test="endTime != null">
+          <![CDATA[and end_date <= #{endTime}]]>
+        </if>
+      </where>
+  </select>
 
-    SELECT
-      *
-    FROM
-      b_bill
-    <where>
-      <if test="startTime != null">
-        and begin_date >= #{startTime}
-      </if>
-      <if test="endTime != null">
-        <![CDATA[and end_date <= #{endTime}]]>
-      </if>
-    </where>
 
-</select>
+  <insert id="saveBatch" parameterType = "java.util.List">
+      insert into
+        b_bill_copy(
+          id,
+          acc_id,
+          begin_date,
+          end_date,
+          valalid_bounty
+        )
+      values
+        <foreach collection="list" item="bill" index="index" separator=",">
+          (#{bill.id},#{bill.accId},#{bill.beginDate},#{bill.endDate},#{bill.valalidBounty})
+        </foreach>
+  </insert>
 
 </mapper>

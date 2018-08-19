@@ -17,4 +17,6 @@ import java.util.Map;
 public interface OrderSysReportDao{
 
     List<BBill> queryList(Map<String, Object> map);
+
+    void saveBatch(List<BBill> bBill);
 }

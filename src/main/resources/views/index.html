@@ -12,11 +12,13 @@
     <div>welcome to index，let's together!</div>
 </div>
 
+<input type="button" id="down" onclick="downFile()" value="导出"/>
+<br/>
 <!-- 功能请求 -->
 <form enctype="multipart/form-data" id="formData" method="post">
-    <input type="file" id="file" name="file" /> <!--style="display: none"-->
-    <input type="text" id="text" onclick="getName()"/>
-    <input type="button" value="上传" onclick="getName()"/><br/>
+    <input type="file" id="file" name="file" style="display: none"/>
+    <input type="text" id="text" onclick="$('input[type=file]').click()"/>
+    <input type="button" value="上传" onclick="$('#file').click()"/><br/>
     <input type="button" onclick="inFile()" value="确定导入"/>
 </form>
 

@@ -20,4 +20,8 @@ public class OrderSysReportServiceImpl implements OrderSysReportService {
 		return orderSysReportDao.queryList(map);
 	}
 
+	@Override
+	public void saveBatch(List<BBill> bBill) {
+		orderSysReportDao.saveBatch(bBill);
+	}
 }

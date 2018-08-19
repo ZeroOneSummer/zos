@@ -42,3 +42,5 @@ spring:
     username: admin
     password: admin
     virtual-host: /
+
+rptFilePath: /data/report/download/   #下载文件存储路径
